@@ -63,6 +63,7 @@ const DEFAULT_CONFIG: SandboxConfig = {
   },
   filesystem: {
     denyRead: ["~/.ssh", "~/.aws", "~/.gnupg"],
+    allowRead: ["."],
     allowWrite: ["."],
     denyWrite: [".env", ".env.*", "*.pem", "*.key"],
   },
@@ -271,12 +272,13 @@ export default function (pi: ExtensionAPI) {
       sandboxInitialized = true;
 
       const networkCount = config.network?.allowedDomains?.length ?? 0;
+      const readCount = config.filesystem?.allowRead?.length ?? 0;
       const writeCount = config.filesystem?.allowWrite?.length ?? 0;
       ctx.ui.setStatus(
         "sandbox",
         ctx.ui.theme.fg(
           "accent",
-          `🔒 Sandbox: ${networkCount} domains, ${writeCount} write paths`,
+          `🔒 Sandbox: ${networkCount} domains, ${readCount} read paths, ${writeCount} write paths`,
         ),
       );
       ctx.ui.notify("Sandbox initialized", "info");
@@ -317,6 +319,7 @@ export default function (pi: ExtensionAPI) {
         "",
         "Filesystem:",
         `  Deny Read: ${config.filesystem?.denyRead?.join(", ") || "(none)"}`,
+        `  Allow Read: ${config.filesystem?.allowRead?.join(", ") || "(none)"}`,
         `  Allow Write: ${config.filesystem?.allowWrite?.join(", ") || "(none)"}`,
         `  Deny Write: ${config.filesystem?.denyWrite?.join(", ") || "(none)"}`,
       ];
