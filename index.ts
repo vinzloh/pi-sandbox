@@ -271,17 +271,13 @@ export default function (pi: ExtensionAPI) {
       sandboxEnabled = true;
       sandboxInitialized = true;
 
-      const networkCount = config.network?.allowedDomains?.length ?? 0;
-      const readCount = config.filesystem?.allowRead?.length ?? 0;
-      const writeCount = config.filesystem?.allowWrite?.length ?? 0;
       ctx.ui.setStatus(
         "sandbox",
         ctx.ui.theme.fg(
           "accent",
-          `🔒 Sandbox: ${networkCount} domains, ${readCount} read paths, ${writeCount} write paths`,
+          "🔒Sandbox"
         ),
       );
-      ctx.ui.notify("Sandbox initialized", "info");
     } catch (err) {
       sandboxEnabled = false;
       ctx.ui.notify(
